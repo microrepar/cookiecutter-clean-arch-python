@@ -1,5 +1,5 @@
 {
-    "project_name": "Cookiecutter Website Simple",
+    "project_name": "Clean Architecture Python",
     "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_') }}",
     "author": "Anonymous",
     "description": "More background on the project"

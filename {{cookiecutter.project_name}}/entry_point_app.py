@@ -1,2 +1,0 @@
-"""Application's entry point
-"""
