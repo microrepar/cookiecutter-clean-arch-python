@@ -28,19 +28,21 @@ class UserModel(Base):
     @classmethod
     def user_model_to_entity(cls, model: 'UserModel') -> User:
         return User(
-            id=model.id,
-            name=model.name,
-            age=model.age,
-            username=model.username,
-            password=model.password
+            id_        = model.id,
+            created_at = model.created_at,
+            name       = model.name,
+            age        = model.age,
+            username   = model.username,
+            password   = model.password
         )
     
     @classmethod
     def user_entity_to_model(cls, entity: User) -> 'UserModel':
         return cls(
-            id=entity.id,
-            name=entity.name,
-            age=entity.age,
-            username=entity.username,
-            password=entity.password
+            id         = entity.id,
+            created_at = entity.created_at,
+            name       = entity.name,
+            age        = entity.age,
+            username   = entity.username,
+            password   = entity.password
         )

@@ -7,7 +7,6 @@ pylintrc:
         generate command above
 
 
-
 pre-commit:
     commands:
         $ pip install pre-commit
@@ -69,7 +68,7 @@ lib: alembic -> depends -> psycopg2 lib
         Display all raw SQL                         : alembic upgrade head --sql.
         Reset the database                          : alembic downgrade base && alembic upgrade head.
 
-    Define schema:
+    Schema defination:
         Option1 in model.py:
             from sqlalchemy import MetaData
             from sqlalchemy.ext.declarative import declarative_base
@@ -79,4 +78,4 @@ lib: alembic -> depends -> psycopg2 lib
                 __tablename__ = 'students'
                 __table_args__ = {'schema' : 'myschema'}
                 
-                ....
+                ...

@@ -6,8 +6,8 @@ from src.core.user import User
 from .user_repository import UserRepository
 
 
-@usecase_map('/user/registry')
-class UserRegistry(UseCase):
+@usecase_map('/user/remove')
+class UserRemove(UseCase):
 
     def __init__(self, repository: UserRepository):
         self.repository = repository
@@ -15,20 +15,22 @@ class UserRegistry(UseCase):
     def execute(self, entity: User) -> Result:
         result = Result()
         
-        if not isinstance(entity, User):
-            result.msg = f'{entity.__class__.__name__} is not a User Entity.'
-
-        result.msg = entity.validate_data()
-
-        if result.qty_msg():
-            result.entities = entity
-            return result
+        ###################################
+        # Add your implementation here
+        result.msg = 'UserGetAll Service is not implemented'
+        ###################################
 
         try:
-            new_user = self.repository.registry(entity)
-            result.entities = new_user
+            removed = self.repository.update(entity)
+            if not removed:
+                result.msg = f'User id={entity.id} was not removed.'
+            
+            result.entities = entity
             return result
+        
         except Exception as error:
             result.msg = str(error)
             result.entities = entity
             return result
+        ###################################
+
