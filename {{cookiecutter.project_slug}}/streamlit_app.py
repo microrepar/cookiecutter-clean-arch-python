@@ -3,7 +3,6 @@ Project name: {{cookiecutter.project_name}}
 Author: {{cookiecutter.author}}
 Description: {{cookiecutter.description}}
 """
-
 import streamlit as st
 
 from src.adapters import Controller
@@ -32,6 +31,48 @@ request    = {'resource': '/user/registry',
 st.write(request)
 
 if st.button('Add', type='primary'):
+    resp       = controller(request=request)
+
+    st.write(resp)
+#############################################################
+
+
+#############################################################
+### UPDATE USER ###
+#############################################################
+st.markdown('## Update user')
+
+controller = Controller()
+request    = {'resource': '/user/update',
+              'user_id_': 1,
+              'user_name': 'codigo100cera',
+              'user_age': 36,
+              'user_username': 'username_test',
+              'user_password': 'password_test',
+              }
+
+st.write(request)
+
+if st.button('Update', type='primary'):
+    resp       = controller(request=request)
+
+    st.write(resp)
+#############################################################
+
+
+#############################################################
+### REMOVE USER ###
+#############################################################
+st.markdown('## Update user')
+
+controller = Controller()
+request    = {'resource': '/user/remove',
+              'user_id_': 1
+              }
+
+st.write(request)
+
+if st.button('Remove', type='primary'):
     resp       = controller(request=request)
 
     st.write(resp)
