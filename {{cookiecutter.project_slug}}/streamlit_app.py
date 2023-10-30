@@ -8,9 +8,9 @@ import streamlit as st
 from src.adapters import Controller
 
 #############################################################
-### GET ALL USERS PLACEHOLDER###
+### ALL USERS PLACEHOLDER###
 #############################################################
-st.markdown(f'## Get all users')
+st.markdown(f'## ALL REGISTRED USERS')
 placeholder_get_all_users = st.empty()
 #############################################################
 
@@ -18,7 +18,7 @@ placeholder_get_all_users = st.empty()
 #############################################################
 ### REGISTRY USER ###
 #############################################################
-st.markdown('## Registry user')
+st.markdown('## REGISTRY USER')
 
 controller = Controller()
 request    = {'resource': '/user/registry',
@@ -40,7 +40,7 @@ if st.button('Add', type='primary'):
 #############################################################
 ### UPDATE USER ###
 #############################################################
-st.markdown('## Update user')
+st.markdown('## UPDATE USER')
 
 controller = Controller()
 request    = {'resource': '/user/update',
@@ -63,7 +63,7 @@ if st.button('Update', type='primary'):
 #############################################################
 ### REMOVE USER ###
 #############################################################
-st.markdown('## Update user')
+st.markdown('## REMOVE USER')
 
 controller = Controller()
 request    = {'resource': '/user/remove',
