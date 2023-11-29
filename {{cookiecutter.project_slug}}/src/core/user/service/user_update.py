@@ -1,6 +1,6 @@
 from src.core import usecase_map
+from src.core.shared import UseCase
 from src.core.shared.application import Result
-from src.core.shared.usecase import UseCase
 from src.core.user import User
 
 from .user_repository import UserRepository

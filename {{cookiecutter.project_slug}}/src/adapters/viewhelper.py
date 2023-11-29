@@ -7,8 +7,8 @@ from collections import OrderedDict
 from enum import Enum
 from typing import Any, Dict, List
 
+from src.core.shared import Entity
 from src.core.shared.application import Result
-from src.core.shared.entity import Entity
 from src.core.shared.utils import string_to_date
 
 primitive_types = [int, float, str, bool, bytes, datetime.date, dict, set] + Enum.__subclasses__()

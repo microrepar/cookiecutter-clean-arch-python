@@ -1,6 +1,6 @@
 import datetime
 
-from src.core.shared.entity import Entity
+from src.core.shared import Entity
 from src.core.shared.utils import date_to_string, datetime_to_string
 
 

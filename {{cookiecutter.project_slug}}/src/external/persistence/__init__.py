@@ -4,8 +4,9 @@
 import os
 from importlib import import_module
 from pathlib import Path
-from src.core.shared.repository import Repository
+
 from dotenv import load_dotenv
+from src.core.shared import Repository
 
 load_dotenv()
 

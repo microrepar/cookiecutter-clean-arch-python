@@ -11,6 +11,6 @@ class Entity(abc.ABC):
 
     @abc.abstractmethod
     def validate_data(self) -> List[str]:
-        """_summary_
+        """Validates the data that was entered
         """
 
