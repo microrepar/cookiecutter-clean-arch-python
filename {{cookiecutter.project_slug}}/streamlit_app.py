@@ -43,7 +43,7 @@ if st.button('Add', type='primary'):
 st.markdown('## UPDATE USER')
 
 controller = Controller()
-request    = {'resource': '/user/update',
+request    = {'resource': '/user/update_detail',
               'user_id_': 1,
               'user_name': 'codigo100cera',
               'user_age': 36,
@@ -67,7 +67,7 @@ st.markdown('## REMOVE USER')
 
 controller = Controller()
 request    = {'resource': '/user/remove',
-              'user_id_': 1
+              'user_username': 'username_test'
               }
 
 st.write(request)

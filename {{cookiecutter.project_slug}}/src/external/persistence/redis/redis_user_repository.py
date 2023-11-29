@@ -3,13 +3,14 @@ import json
 from typing import List
 
 import redis
+
 from config import Config
 from src.core.user import User, UserRepository
 from src.external.persistence import repository_map
 
 
 @repository_map
-class UserRepository(UserRepository):
+class RedisUserRepository(UserRepository):
     def __init__(self):
         self.r = redis.Redis(
             host             = Config.HOST,
@@ -35,7 +36,7 @@ class UserRepository(UserRepository):
         # Checks if a notebook was inserted
         if not is_inserted:
             raise Exception(
-                f'O username "{entity.username}" já existe. Escolha outro username!'
+                f'The username "{entity.username}" already exist. Chose other username and try again!'
             )
 
         self.set_map_id_username(entity)
@@ -140,14 +141,58 @@ class UserRepository(UserRepository):
         return sorted(user_list, key=lambda x: x.id)
 
     def remove(self, entity: User) -> bool:
-        raise Exception(
-            '"remove" method in "SlalchemyUserRepository" is not implemented'
-        )
+        hash_main = entity.__class__.__name__
+
+        # Check if the user exists before removing
+        if not self.r.hexists(hash_main, entity.username):
+            raise Exception(
+                f'The username "{entity.username}" does not exist. Cannot remove.'
+            )
+
+        # Remove the user from the Redis hash
+        deleted_count = self.r.hdel(hash_main, entity.username)
+
+        # Remove the entry from the User_id map
+        hash_id_map = f"{hash_main}_id"
+        self.r.hdel(hash_id_map, entity.id)
+
+        # Check if the user was removed successfully
+        if deleted_count == 0:
+            return False  # Unable to remove the user
+        else:
+            return True  # User removed successfully
 
     def get_by_id(self, entity: User) -> User:
-        raise Exception(
-            '"get_by_id" method in "SlalchemyUserRepository" is not implemented'
+        hash_main = entity.__class__.__name__
+
+        # Check if the user ID exists in the User_id map
+        hash_id_map = f"{hash_main}_id"
+        username = self.r.hget(hash_id_map, entity.id)
+
+        if username is None:
+            raise Exception(f'The user ID "{entity.id}" does not exist.')
+
+        # Get the user data using the retrieved username
+        user_data = self.r.hget(hash_main, username)
+
+        if user_data is None:
+            raise Exception(f'No data found for the user with ID "{entity.id}".')
+
+        user_dict = json.loads(user_data)
+
+        # Construct the User object
+        user = User(
+            id_=user_dict["id"],
+            created_at=user_dict["created_at"],
+            status=user_dict["status"],
+            name=user_dict["name"],
+            age=user_dict["age"],
+            email=user_dict["email"],
+            username=user_dict["username"],
+            password=user_dict["password"],
+            repeat_password=user_dict["repeat_password"],
         )
+        return user
 
     def get_user_id_sequence(self):
         key_sequence = "user_id_sequence"

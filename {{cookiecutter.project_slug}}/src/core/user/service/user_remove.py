@@ -15,22 +15,26 @@ class UserRemove(UseCase):
     def execute(self, entity: User) -> Result:
         result = Result()
         
-        ###################################
-        # Add your implementation here
-        result.msg = 'UserGetAll Service is not implemented'
-        ###################################
-
-        try:
-            removed = self.repository.update(entity)
-            if not removed:
-                result.msg = f'User id={entity.id} was not removed.'
-            
+        user_filter = User(id_=entity.username)
+        user_exists = self.repository.find_by_field(entity)
+        
+        if not user_exists:
+            result.msg = f'The user "{entity.username}" does not exists'
             result.entities = entity
             return result
+        else:
+            user_exists = user_exists[-1]
         
+        try:
+            if self.repository.remove(user_exists):
+                result.objects = True
+                return result
+            else:
+                result.msg = f'The user "{entity.username}" has not been removed or does not exist.'
+                result.entities = entity
+                return result
         except Exception as error:
             result.msg = str(error)
             result.entities = entity
             return result
-        ###################################
 
