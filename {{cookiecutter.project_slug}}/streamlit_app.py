@@ -4,88 +4,46 @@ Author: {{cookiecutter.author}}
 Description: {{cookiecutter.description}}
 """
 import streamlit as st
+from st_pages import Page, Section, add_page_title, show_pages
 
-from src.adapters import Controller
+from src.external.app_pages.auth_manager.authentication import streamlit_auth
+from src.external.app_pages.user_crud import user_crud_page
 
-#############################################################
-### ALL USERS PLACEHOLDER###
-#############################################################
-st.markdown(f'## ALL REGISTRED USERS')
-placeholder_get_all_users = st.empty()
-#############################################################
+# emojis: https://www.webfx.com/tools/emoji-cheat-sheet/
+st.set_page_config(page_title="Sales Dashboard", page_icon=":bar_chart:", layout="wide")
 
+placeholder_msg = st.empty()
 
-#############################################################
-### REGISTRY USER ###
-#############################################################
-st.markdown('## REGISTRY USER')
+# ------------------------- Authentication -------------------------
+name, authentication_status, username, authenticator, credentials = streamlit_auth(placeholder_msg)
 
-controller = Controller()
-request    = {'resource': '/user/registry',
-              'user_name': 'test',
-              'user_age': 36,
-              'user_username': 'username_test',
-              'user_password': 'password_test',
-              }
+if authentication_status == False:
+    st.error("Username/password is incorrect")
 
-st.write(request)
+if authentication_status == None:
+    st.warning("Please enter your username and password to access application")
 
-if st.button('Add', type='primary'):
-    resp       = controller(request=request)
+if authentication_status:
+    # ---- SIDEBAR ----
+    authenticator.logout(f"Logout | {st.session_state.username}", "sidebar")
+    st.sidebar.divider()
 
-    st.write(resp)
-#############################################################
+    if username == 'admin':
+        show_pages(
+            [   Page("streamlit_app.py", "USER CRUD", "🗂️"),
+                Page("src/external/app_pages/auth_manager/auth_manager_page.py", "Authentication Manager", "🔑"),
+            ]
+        )
+    else:
+        show_pages(
+            [
+                Page("streamlit_app.py", "USER CRUD", "🗂️"),
+                Page("src/external/app_pages/auth_manager/auth_manager_page.py", "Authentication Manager", "🔑"),
+            ]
+        )
+    
+    add_page_title()
+    user_crud_page()
 
-
-#############################################################
-### UPDATE USER ###
-#############################################################
-st.markdown('## UPDATE USER')
-
-controller = Controller()
-request    = {'resource': '/user/update_detail',
-              'user_id_': 1,
-              'user_name': 'codigo100cera',
-              'user_age': 36,
-              'user_username': 'username_test',
-              'user_password': 'password_test',
-              }
-
-st.write(request)
-
-if st.button('Update', type='primary'):
-    resp       = controller(request=request)
-
-    st.write(resp)
-#############################################################
-
-
-#############################################################
-### REMOVE USER ###
-#############################################################
-st.markdown('## REMOVE USER')
-
-controller = Controller()
-request    = {'resource': '/user/remove',
-              'user_username': 'username_test'
-              }
-
-st.write(request)
-
-if st.button('Remove', type='primary'):
-    resp       = controller(request=request)
-
-    st.write(resp)
-#############################################################
-
-
-#############################################################
-### GET ALL USERS ###
-#############################################################
-controller = Controller()
-request    = {'resource': '/user'}
-resp       = controller(request=request)
-#############################################################
-
-placeholder_get_all_users.write(resp)
-#############################################################
+else:
+    show_pages([Page("streamlit_app.py", "USER CRUD", "🗂️"),])
