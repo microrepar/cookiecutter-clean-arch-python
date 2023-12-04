@@ -15,9 +15,9 @@ class UsecaseNotFoundError(UseCase):
     def __init__(self, repository: Generic[T]):
         self.execute(repository)
     
-    def execute(self, entidade: Generic[I]=None) -> Result:
+    def execute(self, entity: Generic[I]=None) -> Result:
         result = Result()
-        result.msg = 'Resource was not found.'
+        result.msg = f'**Resource was not found:** there are no defined services to {entity.__class__.__name__} entity'
         return result
 
 

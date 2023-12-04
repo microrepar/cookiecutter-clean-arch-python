@@ -4,14 +4,31 @@
 import os
 from importlib import import_module
 from pathlib import Path
+from typing import List, Protocol
 
 from config import Config
-from src.core.shared.repository import Repository
+from src.core.shared import Entity, Repository
 
 
-class RepositoryNotFoundError():
-    def __init__(self):
-        pass
+class RepositoryNotFoundError(Repository):
+    def registry(self, entity: Entity) -> Entity:
+        raise Exception(f'No repository was found for {entity.__class__.__name__} entity.')
+    
+    def update(self, entity: Entity) -> Entity:
+        raise Exception(f'No repository was found for {entity.__class__.__name__} entity.')
+    
+    def remove(self, entity: Entity) -> bool:
+        raise Exception(f'No repository was found for {entity.__class__.__name__} entity.')
+    
+    def find_by_field(self, entity: Entity) -> List[Entity]:
+        raise Exception(f'No repository was found for {entity.__class__.__name__} entity.')
+    
+    def get_by_id(self, entity: Entity) -> Entity:
+        raise Exception(f'No repository was found for {entity.__class__.__name__} entity.')
+    
+    def get_all(self, entity: Entity) -> List[Entity]:
+        raise Exception(f'No repository was found for {entity.__class__.__name__} entity.')
+    
 
  
 repositories = {'default': RepositoryNotFoundError}
