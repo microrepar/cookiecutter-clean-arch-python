@@ -1,11 +1,15 @@
 import abc
+import datetime
 from typing import List
 
 
 class Entity(abc.ABC):
 
-    def __init__(self, id_=None, created_at=None, updated_at=None):
-        self.id = id_
+    def __init__(self, 
+                 id_        : int = None,
+                 created_at : datetime.date = None,
+                 updated_at : datetime.datetime = None):
+        self.id         = id_
         self.created_at = created_at
         self.updated_at = updated_at
 
