@@ -1,7 +1,7 @@
 cookie:
   expiry_days: 3
   key: some_signature_key # Must be string
-  name: hiring_trello_check_list
+  name: {{cookiecutter.project_slug}}
 credentials:
   usernames: {}
 preauthorized:
